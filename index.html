@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=3.0">
   <!-- KaTeX for Medical & Biochemical Math/LaTeX Rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
@@ -38,7 +38,7 @@
           <span class="tab-icon">📝</span> Current Exam
         </button>
         <button class="nav-tab" data-view="browse">
-          <span class="tab-icon">🔍</span> Browse QBank (<span id="total-q-badge">1426</span>)
+          <span class="tab-icon">🔍</span> Browse QBank (<span id="total-q-badge">1,260</span>)
         </button>
       </nav>
 
@@ -49,7 +49,7 @@
         </div>
         <div class="stat-pill" title="Questions Attempted / Total Available">
           <span class="stat-label">Completed</span>
-          <span class="stat-value" id="hdr-completed">0 / 870</span>
+          <span class="stat-value" id="hdr-completed">0 / 1,260</span>
         </div>
         <button id="theme-toggle" class="btn-icon" title="Toggle Light/Dark Mode">🌓</button>
       </div>
@@ -62,7 +62,7 @@
         <div class="dashboard-hero">
           <div class="hero-text">
             <h2>Welcome to Your USMLE Step 1 Mastery Hub</h2>
-            <p>Targeting 1,426 board-style vignettes mapped to IMC534 lectures and First Aid 2025. Track your diagnostic weaknesses by learning objective below.</p>
+            <p>Targeting 1,260 board-style questions across Weeks 1–3, Repro Notebooks, and Exam 2 Clinical Vignette Modules. Track your diagnostic weaknesses by learning objective below.</p>
           </div>
           <div class="hero-actions">
             <button class="btn btn-primary btn-lg" id="btn-quick-drill">
@@ -91,13 +91,13 @@
           <div class="stat-card">
             <div class="stat-card-header">
               <span class="stat-card-title">QBank Coverage</span>
-              <span class="stat-card-badge">Total 1,426</span>
+              <span class="stat-card-badge">Total 1,260</span>
             </div>
             <div class="stat-card-value" id="dash-coverage">0.0%</div>
             <div class="stat-progress-bar">
               <div class="stat-progress-fill" id="dash-cov-fill" style="width: 0%"></div>
             </div>
-            <div class="stat-subtext" id="dash-unused-sub">1,426 unused questions remaining</div>
+            <div class="stat-subtext" id="dash-unused-sub">1,260 unused questions remaining</div>
           </div>
 
           <div class="stat-card">
@@ -296,6 +296,15 @@
                       <div class="mode-desc">Answer questions at your own pace without explanations until the end of the test.</div>
                     </div>
                   </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Question Source / Format</label>
+                <div class="chip-group" id="question-source-group">
+                  <label class="chip selected"><input type="radio" name="source-filter" value="all" checked> All Sources (1,260 Qs)</label>
+                  <label class="chip"><input type="radio" name="source-filter" value="board"> Board Vignettes (1,140 Qs)</label>
+                  <label class="chip"><input type="radio" name="source-filter" value="anki"> Exam 2 Board Vignettes (120 Qs)</label>
                 </div>
               </div>
 
@@ -523,12 +532,17 @@
       <section id="view-browse" class="view-panel">
         <div class="browse-header-card">
           <h2>Browse Complete QBank Repository</h2>
-          <p>Search, filter, and inspect all 870 board-style questions across the IMC534 reproductive curriculum.</p>
+          <p>Search, filter, and inspect all 1,260 board-style questions across the IMC534 reproductive curriculum.</p>
           
           <div class="browse-filters-bar">
             <input type="text" id="browse-search" placeholder="Search keywords (e.g., endometriosis, Leydig, teratoma, Sheehan)..." class="form-input search-input">
+            <select id="browse-source-filter" class="form-select">
+              <option value="all">All Sources (1,260 Qs)</option>
+              <option value="board">Board Vignettes (1,140 Qs)</option>
+              <option value="anki">Exam 2 Board Vignettes (120 Qs)</option>
+            </select>
             <select id="browse-week-filter" class="form-select">
-              <option value="all">All Modules (1,426 Qs)</option>
+              <option value="all">All Modules (1,260 Qs)</option>
               <option value="W1">Week 1 (330 Qs)</option>
               <option value="W2">Week 2 (180 Qs)</option>
               <option value="W3">Week 3 (360 Qs)</option>
@@ -543,7 +557,7 @@
         </div>
 
         <div class="browse-results-count" id="browse-count-label">
-          Showing 1,426 questions
+          Showing 1,260 questions
         </div>
 
         <div class="browse-cards-container" id="browse-cards-container">
@@ -554,7 +568,7 @@
   </div>
 
   <!-- Load Data and Core Application Scripts -->
-  <script src="questions_data.js?v=2.2"></script>
-  <script src="app.js?v=2.2"></script>
+  <script src="questions_data.js?v=3.0"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>

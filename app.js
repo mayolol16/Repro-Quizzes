@@ -526,13 +526,15 @@
       });
     });
 
-    // Pool chips selection
+    // Pool & Source chips selection
     document.querySelectorAll(".chip").forEach(chip => {
       chip.addEventListener("click", () => {
-        document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+        const group = chip.closest(".chip-group") || chip.parentElement;
+        group.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
         chip.classList.add("selected");
         const radio = chip.querySelector("input[type='radio']");
-        radio.checked = true;
+        if (radio) radio.checked = true;
+        filterChecklist();
         updateBuilderCounts();
       });
     });
@@ -585,13 +587,20 @@
     });
 
     sortedLectures.forEach(lec => {
+      const isAnki = lec.questions.some(q => q.id.startsWith("USMLE_") || q.id.startsWith("Anki_")) || lec.name.startsWith("[USMLE") || lec.name.startsWith("[Anki");
+      const sourceBadge = isAnki 
+        ? `<span class="source-tag anki-tag">Exam 2 Vignettes</span>`
+        : `<span class="source-tag board-tag">Board Q</span>`;
+
       const label = document.createElement("label");
       label.className = "lecture-check-item";
       label.setAttribute("data-week", lec.week);
+      label.setAttribute("data-source", isAnki ? "anki" : "board");
       label.innerHTML = `
-        <div>
+        <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
           <input type="checkbox" value="${lec.name}" checked>
-          <span class="week-tag" style="margin-right: 0.4rem;">${lec.week}</span>
+          <span class="week-tag">${lec.week}</span>
+          ${sourceBadge}
           <span>${lec.name}</span>
         </div>
         <span class="lec-qcount">${lec.questions.length} Qs</span>
@@ -601,9 +610,19 @@
     });
   }
 
-  function filterChecklistByWeek(week) {
+  function filterChecklist() {
+    const activePill = document.querySelector(".week-pill.active");
+    const week = activePill ? activePill.getAttribute("data-week") : "all";
+    const sourceRadio = document.querySelector("input[name='source-filter']:checked");
+    const sourceFilter = sourceRadio ? sourceRadio.value : "all";
+
     document.querySelectorAll(".lecture-check-item").forEach(item => {
-      if (week === "all" || item.getAttribute("data-week") === week) {
+      const itemWeek = item.getAttribute("data-week");
+      const itemSource = item.getAttribute("data-source");
+      const matchWeek = (week === "all" || itemWeek === week);
+      const matchSource = (sourceFilter === "all" || itemSource === sourceFilter);
+
+      if (matchWeek && matchSource) {
         item.style.display = "flex";
       } else {
         item.style.display = "none";
@@ -611,11 +630,23 @@
     });
   }
 
+  function filterChecklistByWeek(week) {
+    filterChecklist();
+  }
+
   function updateBuilderCounts() {
     const selectedLectures = Array.from(document.querySelectorAll(".lecture-check-item input:checked")).map(cb => cb.value);
     const poolFilter = document.querySelector("input[name='pool-filter']:checked").value;
+    const sourceRadio = document.querySelector("input[name='source-filter']:checked");
+    const sourceFilter = sourceRadio ? sourceRadio.value : "all";
 
     let matching = State.allQuestions.filter(q => selectedLectures.includes(q.lecture));
+
+    if (sourceFilter === "board") {
+      matching = matching.filter(q => !q.id.startsWith("USMLE_") && !q.id.startsWith("Anki_"));
+    } else if (sourceFilter === "anki") {
+      matching = matching.filter(q => q.id.startsWith("USMLE_") || q.id.startsWith("Anki_"));
+    }
 
     if (poolFilter === "unused") {
       matching = matching.filter(q => !State.userHistory.attempts[q.id]);
@@ -1368,6 +1399,8 @@
       lectureSelect.appendChild(opt);
     });
 
+    const sourceSelect = document.getElementById("browse-source-filter");
+    if (sourceSelect) sourceSelect.addEventListener("change", () => renderBrowseList());
     weekSelect.addEventListener("change", () => renderBrowseList());
     lectureSelect.addEventListener("change", () => renderBrowseList());
     searchInput.addEventListener("input", () => renderBrowseList());
@@ -1380,11 +1413,15 @@
     const countLabel = document.getElementById("browse-count-label");
     const weekFilter = document.getElementById("browse-week-filter").value;
     const lectureFilter = document.getElementById("browse-lecture-filter").value;
+    const sourceSelect = document.getElementById("browse-source-filter");
+    const sourceFilter = sourceSelect ? sourceSelect.value : "all";
     const query = document.getElementById("browse-search").value.toLowerCase().trim();
 
     container.innerHTML = "";
 
     const filtered = State.allQuestions.filter(q => {
+      if (sourceFilter === "board" && (q.id.startsWith("USMLE_") || q.id.startsWith("Anki_"))) return false;
+      if (sourceFilter === "anki" && (!q.id.startsWith("USMLE_") && !q.id.startsWith("Anki_"))) return false;
       if (weekFilter !== "all" && q.week !== weekFilter) return false;
       if (lectureFilter !== "all" && q.lecture !== lectureFilter) return false;
       if (query) {

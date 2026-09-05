@@ -7,20 +7,20 @@ An interactive board-style question bank web application designed for the Univer
 ### Option 1: Direct Browser Open (Fastest, No Terminal Needed)
 You can open `index.html` directly in your browser without needing to run any server:
 ```bash
-open "Endo Repo/qbank_app/index.html"
+open "/Users/markyoussef_1/Desktop/Med School/M2/Fall/IMC534 Endo Repo/qbank_app/index.html"
 ```
 Or simply double-click **`index.html`** in Finder!
 
 ### Option 2: Using the One-Click Launch Script
 In your terminal, run:
 ```bash
-"~/Endo Repo/qbank_app/start.sh"
+"/Users/markyoussef_1/Desktop/Med School/M2/Fall/IMC534 Endo Repo/qbank_app/start.sh"
 ```
 This automatically starts a local web server at `http://localhost:8080` and opens it in your default browser.
 
 ### Option 3: Standard Python Web Server
 ```bash
-cd "~/Endo Repo/qbank_app"
+cd "/Users/markyoussef_1/Desktop/Med School/M2/Fall/IMC534 Endo Repo/qbank_app"
 python3 -m http.server 8080
 ```
 Then visit: **`http://localhost:8080`** in Chrome, Safari, or Arc.
