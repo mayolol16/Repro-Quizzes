@@ -639,8 +639,14 @@
     const poolFilter = document.querySelector("input[name='pool-filter']:checked").value;
     const sourceRadio = document.querySelector("input[name='source-filter']:checked");
     const sourceFilter = sourceRadio ? sourceRadio.value : "all";
+    const yieldRadio = document.querySelector("input[name='yield-filter']:checked");
+    const yieldFilter = yieldRadio ? yieldRadio.value : "all";
 
     let matching = State.allQuestions.filter(q => selectedLectures.includes(q.lecture));
+
+    if (yieldFilter !== "all") {
+      matching = matching.filter(q => q.yield_level === yieldFilter);
+    }
 
     if (sourceFilter === "board") {
       matching = matching.filter(q => !q.id.startsWith("USMLE_") && !q.id.startsWith("Anki_"));
@@ -877,7 +883,7 @@
   }
 
   // 3. ACTIVE QUIZ EXECUTION ENGINE
-  function startQuizWithQuestions(questions, mode, title) {
+  function startQuizWithQuestions(questions, mode, title, preRevealMode = false) {
     if (!questions || questions.length === 0) return;
 
     State.activeQuiz = {
@@ -894,6 +900,18 @@
       elapsedSeconds: 0,
       isPaused: false
     };
+
+    if (preRevealMode) {
+      questions.forEach((q, idx) => {
+        State.activeQuiz.revealed[idx] = true;
+        const attempt = State.userHistory.attempts[q.id];
+        if (attempt) {
+          State.activeQuiz.userAnswers[idx] = attempt.choice;
+        } else {
+          State.activeQuiz.userAnswers[idx] = q.correct || "A"; // Fallback to reveal
+        }
+      });
+    }
 
     // Show nav tab for active quiz
     const navTab = document.getElementById("nav-active-quiz");
@@ -1103,6 +1121,26 @@
     document.getElementById("q-meta-week").textContent = q.week;
     document.getElementById("q-meta-lecture").textContent = q.lecture;
     document.getElementById("q-meta-topic").textContent = q.topic;
+    
+    const yieldEl = document.getElementById("q-meta-yield");
+    if (yieldEl) {
+      yieldEl.style.display = "inline-block";
+      if (q.yield_level === "High") {
+        yieldEl.innerHTML = "🔥 High Yield";
+        yieldEl.style.color = "var(--accent-rose)";
+        yieldEl.style.borderColor = "var(--accent-rose)";
+      } else if (q.yield_level === "Mid") {
+        yieldEl.innerHTML = "⚡ Mid Yield";
+        yieldEl.style.color = "var(--accent-amber)";
+        yieldEl.style.borderColor = "var(--accent-amber)";
+      } else if (q.yield_level === "Low") {
+        yieldEl.innerHTML = "🧊 Low Yield";
+        yieldEl.style.color = "var(--accent-emerald)";
+        yieldEl.style.borderColor = "var(--accent-emerald)";
+      } else {
+        yieldEl.style.display = "none";
+      }
+    }
 
     // Stem
     const stemEl = document.getElementById("q-stem-text");
@@ -1244,14 +1282,35 @@
 
     statusBanner.className = "explanation-header " + (isCorrect ? "correct" : "incorrect");
     statusIcon.textContent = isCorrect ? "✓" : "✕";
-    statusTitle.textContent = isCorrect
-      ? `Correct! Answer is (${q.correct})`
-      : `Incorrect. Your answer was (${chosen || "None"}); Correct answer is (${q.correct})`;
+    let expTitleText = "";
+    if (isCorrect) {
+      expTitleText = `Correct! Your answer was (${q.correct})`;
+    } else if (!q.correct) {
+      expTitleText = `Your answer was (${chosen || "None"}). (No answer key available for this question)`;
+    } else {
+      expTitleText = `Incorrect. Your answer was (${chosen || "None"}); Correct answer is (${q.correct})`;
+    }
+    statusTitle.textContent = expTitleText;
 
     rationaleText.innerHTML = formatMathText(q.rationale || "No detailed rationale available.");
     pearlText.innerHTML = formatMathText(q.pearl || "Keep testing key mechanisms from First Aid 2025!");
     renderKaTeX(rationaleText);
     renderKaTeX(pearlText);
+
+    // Render Learning Objectives
+    const loBox = document.getElementById("exp-lo-box");
+    const loList = document.getElementById("exp-lo-list");
+    if (loBox && loList) {
+      const los = q.learning_objectives || [];
+      if (los.length > 0) {
+        loList.innerHTML = los.map(lo =>
+          `<li class="lo-item">${lo.text}</li>`
+        ).join("");
+        loBox.style.display = "block";
+      } else {
+        loBox.style.display = "none";
+      }
+    }
 
     expCard.style.display = "block";
     expCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -1389,6 +1448,7 @@
     const weekSelect = document.getElementById("browse-week-filter");
     const lectureSelect = document.getElementById("browse-lecture-filter");
     const searchInput = document.getElementById("browse-search");
+    const yieldSelect = document.getElementById("browse-yield-filter");
 
     // Populate lectures dropdown
     const lectures = Object.values(State.lecturesMap).sort((a, b) => a.name.localeCompare(b.name));
@@ -1400,7 +1460,11 @@
     });
 
     const sourceSelect = document.getElementById("browse-source-filter");
-    if (sourceSelect) sourceSelect.addEventListener("change", () => renderBrowseList());
+    if (sourceSelect) sourceSelect.addEventListener("change", renderBrowseList);
+    if (yieldSelect) yieldSelect.addEventListener("change", renderBrowseList);
+    
+    const historySelect = document.getElementById("browse-history-filter");
+    if (historySelect) historySelect.addEventListener("change", renderBrowseList);
     weekSelect.addEventListener("change", () => renderBrowseList());
     lectureSelect.addEventListener("change", () => renderBrowseList());
     searchInput.addEventListener("input", () => renderBrowseList());
@@ -1415,13 +1479,23 @@
     const lectureFilter = document.getElementById("browse-lecture-filter").value;
     const sourceSelect = document.getElementById("browse-source-filter");
     const sourceFilter = sourceSelect ? sourceSelect.value : "all";
+    const yieldSelect = document.getElementById("browse-yield-filter");
+    const yieldFilter = yieldSelect ? yieldSelect.value : "all";
+    const historySelect = document.getElementById("browse-history-filter");
+    const historyFilter = historySelect ? historySelect.value : "all";
     const query = document.getElementById("browse-search").value.toLowerCase().trim();
 
     container.innerHTML = "";
 
     const filtered = State.allQuestions.filter(q => {
+      const isAttempted = State.userHistory.attempts[q.id];
+      if (historyFilter === "incorrect" && (!isAttempted || isAttempted.isCorrect)) return false;
+      if (historyFilter === "correct" && (!isAttempted || !isAttempted.isCorrect)) return false;
+      if (historyFilter === "untested" && isAttempted) return false;
+
       if (sourceFilter === "board" && (q.id.startsWith("USMLE_") || q.id.startsWith("Anki_"))) return false;
       if (sourceFilter === "anki" && (!q.id.startsWith("USMLE_") && !q.id.startsWith("Anki_"))) return false;
+      if (yieldFilter !== "all" && q.yield_level !== yieldFilter) return false;
       if (weekFilter !== "all" && q.week !== weekFilter) return false;
       if (lectureFilter !== "all" && q.lecture !== lectureFilter) return false;
       if (query) {
@@ -1453,18 +1527,25 @@
           <div>
             <span class="badge badge-week">${q.week}</span>
             <span class="badge badge-topic">${q.topic}</span>
+            <span class="badge" style="background: transparent; border: 1px solid var(--text-muted);">${q.yield_level ? q.yield_level + ' Yield' : ''}</span>
           </div>
           <div style="font-size: 0.8rem;">${attemptStatus}</div>
         </div>
         <div class="browse-q-stem">${formatMathText(q.stem)}</div>
         <div class="browse-q-footer">
           <span style="color: var(--text-muted); font-size: 0.8rem;">Lecture: <strong>${q.lecture}</strong></span>
-          <button class="btn btn-sm btn-primary btn-practice-single" data-qid="${q.id}">Practice This Question</button>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline btn-review-single" data-qid="${q.id}">Review Explanation</button>
+            <button class="btn btn-sm btn-primary btn-practice-single" data-qid="${q.id}">Practice Question</button>
+          </div>
         </div>
       `;
 
       card.querySelector(".btn-practice-single").addEventListener("click", () => {
         startQuizWithQuestions([q], "tutor", `Single Question Practice`);
+      });
+      card.querySelector(".btn-review-single").addEventListener("click", () => {
+        startQuizWithQuestions([q], "tutor", `Single Question Review`, true);
       });
 
       container.appendChild(card);

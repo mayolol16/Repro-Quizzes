@@ -1180,6 +1180,48 @@ body {
   color: var(--text-primary);
 }
 
+/* Learning Objectives Box */
+.lo-box {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid var(--accent-emerald);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.lo-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-emerald);
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.lo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lo-item {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.lo-item::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent-emerald);
+  font-weight: 700;
+}
 /* Question Jump Drawer */
 .q-nav-drawer {
   position: absolute;

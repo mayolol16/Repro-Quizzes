@@ -38,11 +38,15 @@
           <span class="tab-icon">📝</span> Current Exam
         </button>
         <button class="nav-tab" data-view="browse">
-          <span class="tab-icon">🔍</span> Browse QBank (<span id="total-q-badge">1,260</span>)
+          <span class="tab-icon">🔍</span> Browse QBank&nbsp;(<span id="total-q-badge">1,260</span>)
         </button>
       </nav>
 
       <div class="header-right">
+        <!-- Live Online Users Tracker -->
+        <div class="stat-pill" style="padding: 0; overflow: hidden; background: transparent; border: none; align-items: center; justify-content: center; display: flex;">
+          <script id="_wau48e">var _wau = _wau || []; _wau.push(["classic", "qbankimc534", "100"]);</script><script async src="//waust.at/c.js"></script>
+        </div>
         <div class="stat-pill" title="Overall Accuracy across completed questions">
           <span class="stat-label">Accuracy</span>
           <span class="stat-value" id="hdr-accuracy">0%</span>
@@ -107,7 +111,10 @@
             </div>
             <div class="stat-card-value" id="dash-flagged-count">0</div>
             <div class="stat-subtext">Questions bookmarked during tests</div>
-            <button class="btn btn-sm btn-outline mt-2" id="btn-drill-flagged" style="display: none;">Practice Flagged</button>
+            <div class="btn-group mt-2">
+              <button class="btn btn-sm btn-outline" id="btn-drill-flagged" style="display: none;">Practice Flagged</button>
+              <button class="btn btn-sm btn-secondary" id="btn-review-incorrect">Review Incorrect</button>
+            </div>
           </div>
 
           <div class="stat-card">
@@ -309,6 +316,16 @@
               </div>
 
               <div class="form-group">
+                <label class="form-label">Yield Filter</label>
+                <div class="chip-group" id="yield-filter-group">
+                  <label class="chip selected"><input type="radio" name="yield-filter" value="all" checked> All Yields</label>
+                  <label class="chip"><input type="radio" name="yield-filter" value="High"> High Yield Only</label>
+                  <label class="chip"><input type="radio" name="yield-filter" value="Mid"> Mid Yield Only</label>
+                  <label class="chip"><input type="radio" name="yield-filter" value="Low"> Low Yield Only</label>
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label class="form-label">Question Pool Filter</label>
                 <div class="chip-group">
                   <label class="chip selected"><input type="radio" name="pool-filter" value="all" checked> All Questions</label>
@@ -433,6 +450,7 @@
               <span class="badge badge-week" id="q-meta-week">Week 1</span>
               <span class="badge badge-lecture" id="q-meta-lecture">Lecture 1.1 Anatomy</span>
               <span class="badge badge-topic" id="q-meta-topic">Levator Ani & Perineal Body</span>
+              <span class="badge badge-yield" id="q-meta-yield" style="background-color: var(--bg-surface); border: 1px solid var(--accent-rose); color: var(--accent-rose);">🔥 High Yield</span>
             </div>
 
             <!-- Clinical Vignette Stem -->
@@ -475,6 +493,16 @@
                   <div class="pearl-content" id="exp-pearl-text">
                     <!-- Injected via JavaScript -->
                   </div>
+                </div>
+
+                <div class="lo-box" id="exp-lo-box" style="display: none;">
+                  <div class="lo-header">
+                    <span class="lo-icon">🎯</span>
+                    <strong>Learning Objectives Covered</strong>
+                  </div>
+                  <ul class="lo-list" id="exp-lo-list">
+                    <!-- Injected via JavaScript -->
+                  </ul>
                 </div>
               </div>
             </div>
@@ -540,6 +568,18 @@
               <option value="all">All Sources (1,260 Qs)</option>
               <option value="board">Board Vignettes (1,140 Qs)</option>
               <option value="anki">Exam 2 Board Vignettes (120 Qs)</option>
+            </select>
+            <select id="browse-history-filter" class="form-select">
+              <option value="all">All Performance</option>
+              <option value="incorrect">Incorrect Only</option>
+              <option value="correct">Correct Only</option>
+              <option value="untested">Untested Only</option>
+            </select>
+            <select id="browse-yield-filter" class="form-select">
+              <option value="all">All Yields</option>
+              <option value="High">High Yield Only</option>
+              <option value="Mid">Mid Yield Only</option>
+              <option value="Low">Low Yield Only</option>
             </select>
             <select id="browse-week-filter" class="form-select">
               <option value="all">All Modules (1,260 Qs)</option>
