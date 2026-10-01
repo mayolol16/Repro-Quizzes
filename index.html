@@ -3,33 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IMC535 Neuroscience & Behavior USMLE Step 1 QBank</title>
+  <title>IMC534 Reproductive & Endocrine USMLE Step 1 QBank</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=3.0">
   <!-- KaTeX for Medical & Biochemical Math/LaTeX Rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 </head>
-<body class="theme-light">
+<body class="theme-dark">
   <div id="app">
     <!-- Top Navigation Bar -->
     <header class="app-header">
       <div class="header-left">
         <div class="app-logo">
-          <span class="logo-icon">🧠</span>
+          <span class="logo-icon">🩺</span>
           <div>
-            <div class="logo-title">IMC535 Neuro QBank</div>
-            <div class="logo-subtitle">USMLE Step 1 • Neuroscience & Behavior Block (Exams 1–4)</div>
+            <div class="logo-title">IMC534 Board QBank</div>
+            <div class="logo-subtitle">USMLE Step 1 • Reproductive & Endocrine Block</div>
           </div>
         </div>
       </div>
 
       <nav class="nav-tabs">
         <button class="nav-tab active" data-view="dashboard">
-          <span class="tab-icon">📊</span> Analytics & Objectives
+          <span class="tab-icon">📊</span> Analytics & Weaknesses
         </button>
         <button class="nav-tab" data-view="create-quiz">
           <span class="tab-icon">⚡</span> Create Quiz
@@ -38,20 +38,24 @@
           <span class="tab-icon">📝</span> Current Exam
         </button>
         <button class="nav-tab" data-view="browse">
-          <span class="tab-icon">🔍</span> Browse QBank&nbsp;(<span id="total-q-badge">0</span>)
+          <span class="tab-icon">🔍</span> Browse QBank&nbsp;(<span id="total-q-badge">1,260</span>)
         </button>
       </nav>
 
       <div class="header-right">
+        <!-- Live Online Users Tracker -->
+        <div class="stat-pill" style="padding: 0; overflow: hidden; background: transparent; border: none; align-items: center; justify-content: center; display: flex;">
+          <a href="https://whos.amung.us/stats/jlpm2zngni/" target="_blank"><img src="https://whos.amung.us/swidget/jlpm2zngni.png" alt="online users" style="height: 20px; vertical-align: middle; padding-bottom: 2px;" title="Live Online Users" border="0" /></a>
+        </div>
         <div class="stat-pill" title="Overall Accuracy across completed questions">
           <span class="stat-label">Accuracy</span>
           <span class="stat-value" id="hdr-accuracy">0%</span>
         </div>
         <div class="stat-pill" title="Questions Attempted / Total Available">
           <span class="stat-label">Completed</span>
-          <span class="stat-value" id="hdr-completed">0 / 0</span>
+          <span class="stat-value" id="hdr-completed">0 / 1,260</span>
         </div>
-        <button id="theme-toggle" class="btn-icon" title="Toggle Clean Light / Dark Theme">🌓</button>
+        <button id="theme-toggle" class="btn-icon" title="Toggle Light/Dark Mode">🌓</button>
       </div>
     </header>
 
@@ -61,8 +65,8 @@
       <section id="view-dashboard" class="view-panel active">
         <div class="dashboard-hero">
           <div class="hero-text">
-            <h2>Welcome to Your Neuroscience & Behavior Mastery Hub</h2>
-            <p>Interactive board-style clinical vignettes aligned with Jacobs School of Medicine IMC535 curriculum across Exams 1–4 and First Aid 2025/2026. Track diagnostic weaknesses by institutional learning objectives below.</p>
+            <h2>Welcome to Your USMLE Step 1 Mastery Hub</h2>
+            <p>Targeting 1,260 board-style questions across Weeks 1–3, Repro Notebooks, and Exam 2 Clinical Vignette Modules. Track your diagnostic weaknesses by learning objective below.</p>
           </div>
           <div class="hero-actions">
             <button class="btn btn-primary btn-lg" id="btn-quick-drill">
@@ -91,138 +95,153 @@
           <div class="stat-card">
             <div class="stat-card-header">
               <span class="stat-card-title">QBank Coverage</span>
-              <span class="stat-card-badge" id="dash-total-badge">Total 0</span>
+              <span class="stat-card-badge">Total 1,260</span>
             </div>
             <div class="stat-card-value" id="dash-coverage">0.0%</div>
             <div class="stat-progress-bar">
               <div class="stat-progress-fill" id="dash-cov-fill" style="width: 0%"></div>
             </div>
-            <div class="stat-subtext" id="dash-cov-sub">0 unique completed</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-card-header">
-              <span class="stat-card-title">High-Risk Weaknesses</span>
-              <span class="stat-card-badge danger" id="dash-weak-badge">0 flagged</span>
-            </div>
-            <div class="stat-card-value" id="dash-weak-count">0</div>
-            <div class="stat-subtext">Objectives with &lt; 70% accuracy</div>
+            <div class="stat-subtext" id="dash-unused-sub">1,260 unused questions remaining</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-card-header">
               <span class="stat-card-title">Flagged for Review</span>
-              <span class="stat-card-badge">Bookmarked</span>
+              <span class="stat-card-badge warning">Bookmarks</span>
             </div>
             <div class="stat-card-value" id="dash-flagged-count">0</div>
-            <div class="stat-subtext">
-              <a href="#" id="link-drill-flagged" style="color: var(--primary); text-decoration: none; font-weight: 600;">Drill flagged items &rarr;</a>
+            <div class="stat-subtext">Questions bookmarked during tests</div>
+            <div class="btn-group mt-2">
+              <button class="btn btn-sm btn-outline" id="btn-drill-flagged" style="display: none;">Practice Flagged</button>
+              <button class="btn btn-sm btn-secondary" id="btn-review-incorrect">Review Incorrect</button>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">High-Risk Weaknesses</span>
+              <span class="stat-card-badge danger">Action Needed</span>
+            </div>
+            <div class="stat-card-value" id="dash-weak-count">0</div>
+            <div class="stat-subtext">Objectives with accuracy &lt; 70%</div>
+            <button class="btn btn-sm btn-outline mt-2" id="btn-reset-stats">Reset All Progress</button>
+          </div>
+        </div>
+
+        <!-- Week Performance Breakdown -->
+        <div class="section-container">
+          <div class="section-header">
+            <h3>Performance by Curriculum Week</h3>
+            <span class="section-hint">Click any week to launch targeted study</span>
+          </div>
+          <div class="weeks-grid">
+            <div class="week-card" data-week="W1">
+              <div class="week-card-top">
+                <div>
+                  <span class="week-tag">Week 1</span>
+                  <h4>Pelvic Anatomy, Histology, Puberty & Uterine Pathology</h4>
+                </div>
+                <div class="week-acc" id="w1-acc">--%</div>
+              </div>
+              <div class="week-stats-line">
+                <span>330 Questions (12 Lectures)</span>
+                <span id="w1-count">0 answered</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="stat-progress-fill" id="w1-fill" style="width: 0%"></div>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-3 btn-test-week" data-week="W1">Test Week 1</button>
+            </div>
+
+            <div class="week-card" data-week="W2">
+              <div class="week-card-top">
+                <div>
+                  <span class="week-tag">Week 2</span>
+                  <h4>Breast Disease, STIs, Ovarian Neoplasms & GTD</h4>
+                </div>
+                <div class="week-acc" id="w2-acc">--%</div>
+              </div>
+              <div class="week-stats-line">
+                <span>180 Questions (7 Lectures)</span>
+                <span id="w2-count">0 answered</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="stat-progress-fill" id="w2-fill" style="width: 0%"></div>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-3 btn-test-week" data-week="W2">Test Week 2</button>
+            </div>
+
+            <div class="week-card" data-week="W3">
+              <div class="week-card-top">
+                <div>
+                  <span class="week-tag">Week 3</span>
+                  <h4>Obstetrics, Teratogens, Male Repro, Testicular & Prostate Pathology</h4>
+                </div>
+                <div class="week-acc" id="w3-acc">--%</div>
+              </div>
+              <div class="week-stats-line">
+                <span>360 Questions (12 Lectures)</span>
+                <span id="w3-count">0 answered</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="stat-progress-fill" id="w3-fill" style="width: 0%"></div>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-3 btn-test-week" data-week="W3">Test Week 3</button>
+            </div>
+
+            <div class="week-card" data-week="Notebooks">
+              <div class="week-card-top">
+                <div>
+                  <span class="week-tag" style="background: rgba(139, 92, 246, 0.2); color: var(--accent-violet);">Repro Notebooks</span>
+                  <h4>Curriculum Notebook Qs (Weeks 4-5 & Week 6)</h4>
+                </div>
+                <div class="week-acc" id="nb-acc">--%</div>
+              </div>
+              <div class="week-stats-line">
+                <span>497 Questions (24 Sets)</span>
+                <span id="nb-count">0 answered</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="stat-progress-fill" id="nb-fill" style="width: 0%"></div>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-3 btn-test-week" data-week="Notebooks">Test Notebooks</button>
+            </div>
+
+            <div class="week-card" data-week="Pharmacology">
+              <div class="week-card-top">
+                <div>
+                  <span class="week-tag" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald);">Pharmacology</span>
+                  <h4>Bradford Workshops, Reviews, FHA, PCOS, POI, Prolactin</h4>
+                </div>
+                <div class="week-acc" id="ph-acc">--%</div>
+              </div>
+              <div class="week-stats-line">
+                <span>59 Questions (Dr. Bradford Sessions)</span>
+                <span id="ph-count">0 answered</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="stat-progress-fill" id="ph-fill" style="width: 0%"></div>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-3 btn-test-week" data-week="Pharmacology">Test Pharmacology</button>
             </div>
           </div>
         </div>
 
-        <!-- 4 Exam Blocks Breakdown -->
-        <h3 class="section-title">IMC535 Course Exam Progression</h3>
-        <div class="modules-grid">
-          <div class="module-card">
-            <div class="module-header">
-              <span class="module-badge">Weeks 1–3</span>
-              <h4>Exam 1: Foundations & Neuroanatomy</h4>
-            </div>
-            <p class="module-desc">CNS Gross Anatomy, Neuroembryology & Malformations, Lysosomal Storage Diseases, Action Potentials & Local Anesthetics, Synaptic Transmission, Glia & Histology, Ventricles/CSF/Hydrocephalus, NMJ Disorders & Cholinomimetics, Spinal Cord & Sensory Tracts.</p>
-            <div class="module-stats">
-              <div class="module-stat-row">
-                <span>Progress:</span>
-                <span id="mod-e1-count">0 Qs</span>
-              </div>
-              <div class="module-stat-row">
-                <span>Accuracy:</span>
-                <span id="mod-e1-acc">--%</span>
-              </div>
-            </div>
-            <button class="btn btn-outline btn-block mt-2 btn-start-exam-drill" data-exam="E1">Practice Exam 1</button>
-          </div>
-
-          <div class="module-card">
-            <div class="module-header">
-              <span class="module-badge">Weeks 4–5</span>
-              <h4>Exam 2: Sensory, Motor & Pathways</h4>
-            </div>
-            <p class="module-desc">Motor Pathways (Corticospinal, Corticobulbar), Upper vs Lower Motor Neuron Lesions, Cerebellar Circuits & Ataxias, Basal Ganglia Circuitry (Direct/Indirect pathways, Parkinson, Huntington), Somatosensory Systems & Thalamic Nuclei.</p>
-            <div class="module-stats">
-              <div class="module-stat-row">
-                <span>Progress:</span>
-                <span id="mod-e2-count">0 Qs</span>
-              </div>
-              <div class="module-stat-row">
-                <span>Accuracy:</span>
-                <span id="mod-e2-acc">--%</span>
-              </div>
-            </div>
-            <button class="btn btn-outline btn-block mt-2 btn-start-exam-drill" data-exam="E2">Practice Exam 2</button>
-          </div>
-
-          <div class="module-card">
-            <div class="module-header">
-              <span class="module-badge">Weeks 6–8</span>
-              <h4>Exam 3: Brainstem, Cranial Nerves & Practical</h4>
-            </div>
-            <p class="module-desc">Cranial Nerve Nuclei & Brainstem Syndromes (Wallenberg, Weber, Claude, Millard-Gubler), Visual Pathways & Field Defects, Vestibular & Auditory Systems, Neuro-Ophthalmology, Laboratory Practical Exam Preparations.</p>
-            <div class="module-stats">
-              <div class="module-stat-row">
-                <span>Progress:</span>
-                <span id="mod-e3-count">0 Qs</span>
-              </div>
-              <div class="module-stat-row">
-                <span>Accuracy:</span>
-                <span id="mod-e3-acc">--%</span>
-              </div>
-            </div>
-            <button class="btn btn-outline btn-block mt-2 btn-start-exam-drill" data-exam="E3">Practice Exam 3</button>
-          </div>
-
-          <div class="module-card">
-            <div class="module-header">
-              <span class="module-badge">Weeks 9–11</span>
-              <h4>Exam 4: Psychiatry & NBME Subject Exam</h4>
-            </div>
-            <p class="module-desc">Psychopathology, Mood Disorders (MDD, Bipolar), Anxiety & PTSD, Schizophrenia & Psychoses, Personality Disorders, Substance Use & Addiction, Psychopharmacology (Antidepressants, Antipsychotics, Mood Stabilizers), NBME Customized Subject Exam.</p>
-            <div class="module-stats">
-              <div class="module-stat-row">
-                <span>Progress:</span>
-                <span id="mod-e4-count">0 Qs</span>
-              </div>
-              <div class="module-stat-row">
-                <span>Accuracy:</span>
-                <span id="mod-e4-acc">--%</span>
-              </div>
-            </div>
-            <button class="btn btn-outline btn-block mt-2 btn-start-exam-drill" data-exam="E4">Practice Exam 4</button>
-          </div>
-        </div>
-
-        <!-- Learning Objectives Diagnostic Table -->
-        <div class="card mt-4">
-          <div class="card-header-flex">
+        <!-- Diagnostic Weakness Matrix -->
+        <div class="section-container">
+          <div class="section-header flex-between">
             <div>
-              <h3>Institutional Learning Objectives Diagnostic Matrix</h3>
-              <p class="text-secondary" style="font-size: 0.85rem;">Diagnose your conceptual grasp against faculty-assigned learning objectives. Weak areas (&lt; 70% accuracy) are prioritized for custom drilling.</p>
+              <h3>Learning Objective Diagnostic Matrix</h3>
+              <p class="section-desc">Identifies specific concepts where incorrect choices are clustered so you can eliminate blind spots.</p>
             </div>
-            <div class="filters-inline">
-              <select id="lo-filter-exam" class="form-select">
-                <option value="all">All Exams</option>
-                <option value="E1" selected>Exam 1 (E1)</option>
-                <option value="E2">Exam 2 (E2)</option>
-                <option value="E3">Exam 3 (E3)</option>
-                <option value="E4">Exam 4 (E4)</option>
-              </select>
+            <div class="matrix-controls">
+              <input type="text" id="lo-search" placeholder="Filter learning objectives..." class="form-input search-input">
               <select id="lo-filter-status" class="form-select">
                 <option value="all">All Objectives</option>
-                <option value="weak">⚠️ High Weakness (&lt;70%)</option>
-                <option value="mastered">✓ Mastered (&ge;70%)</option>
+                <option value="weak">Weak Only (&lt;70%)</option>
                 <option value="untested">Untested</option>
+                <option value="mastered">Mastered (&ge;70%)</option>
               </select>
-              <input type="text" id="lo-search" class="form-input" placeholder="Search objectives, topics..." style="width: 220px;">
             </div>
           </div>
 
@@ -230,477 +249,366 @@
             <table class="data-table" id="lo-table">
               <thead>
                 <tr>
-                  <th style="width: 80px;">Exam</th>
-                  <th style="width: 180px;">Lecture</th>
-                  <th>Learning Objective</th>
-                  <th style="width: 90px;">Pool</th>
-                  <th style="width: 100px;">Attempted</th>
-                  <th style="width: 100px;">Accuracy</th>
-                  <th style="width: 130px;">Status</th>
-                  <th style="width: 90px;">Action</th>
+                  <th>Week</th>
+                  <th>Lecture / Topic</th>
+                  <th>Learning Objective / Concept Focus</th>
+                  <th>Attempted</th>
+                  <th>Accuracy</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="lo-table-body">
-                <!-- Populated dynamically via JS -->
+                <!-- Injected via JavaScript -->
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- 2. CREATE QUIZ VIEW -->
+      <!-- 2. CREATE QUIZ / TEST BUILDER -->
       <section id="view-create-quiz" class="view-panel">
-        <div class="quiz-builder-layout">
-          <div class="builder-main card">
-            <h3>Custom Quiz Configuration</h3>
-            <p class="text-secondary mb-3">Tailor your practice exam by exam module, specific lectures, question status, and exam testing mode.</p>
+        <div class="quiz-builder-card">
+          <div class="card-header">
+            <h2>Custom Quiz Configurator</h2>
+            <p>Customize your USMLE Step 1 practice session by week, lecture, objective, question pool, and test mode.</p>
+          </div>
 
-            <!-- Exam Filter Pills -->
-            <div class="filter-group">
-              <label class="filter-label">Exam Module:</label>
-              <div class="btn-group" id="builder-exam-filter">
-                <button class="btn btn-sm btn-filter active" data-exam="all">All Exams</button>
-                <button class="btn btn-sm btn-filter" data-exam="E1">Exam 1 (E1)</button>
-                <button class="btn btn-sm btn-filter" data-exam="E2">Exam 2 (E2)</button>
-                <button class="btn btn-sm btn-filter" data-exam="E3">Exam 3 (E3)</button>
-                <button class="btn btn-sm btn-filter" data-exam="E4">Exam 4 (E4)</button>
-              </div>
-            </div>
-
-            <!-- Week Selection Pills -->
-            <div class="filter-group mt-2">
-              <label class="filter-label">Curricular Week:</label>
-              <div class="btn-group" id="builder-week-filter">
-                <button class="btn btn-sm btn-filter active" data-week="all">All Weeks</button>
-                <button class="btn btn-sm btn-filter" data-week="E1-W1">Week 1 (Foundations)</button>
-                <button class="btn btn-sm btn-filter" data-week="E1-W2">Week 2 (Spinal & Sensory)</button>
-                <button class="btn btn-sm btn-filter" data-week="E1-W3">Week 3 (Motor & Cerebellar)</button>
-              </div>
-            </div>
-
-            <!-- Lecture Checklist -->
-            <div class="lecture-selection-box mt-3">
-              <div class="lecture-sel-header">
-                <label class="filter-label">Select Lectures & Topics:</label>
-                <div class="sel-actions">
-                  <button type="button" class="btn btn-xs btn-link" id="btn-select-all-lectures">Select All</button>
-                  <span class="text-muted">|</span>
-                  <button type="button" class="btn btn-xs btn-link" id="btn-clear-all-lectures">Clear All</button>
-                </div>
-              </div>
-              <div class="lecture-checklist" id="lecture-checklist">
-                <!-- Injected via JavaScript -->
-              </div>
-            </div>
-
-            <!-- Question Pool & Mode Selection -->
-            <div class="grid-2col mt-4">
-              <div>
-                <label class="filter-label">Question Pool Filter:</label>
-                <div class="radio-stack">
-                  <label class="radio-label">
-                    <input type="radio" name="pool-filter" value="all" checked>
-                    <span>All Available Questions in Selection</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="pool-filter" value="unused">
-                    <span>Unused Questions Only</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="pool-filter" value="incorrect">
-                    <span>Previously Incorrect Questions Only</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="pool-filter" value="flagged">
-                    <span>Bookmarked / Flagged Questions Only</span>
-                  </label>
-                </div>
-              </div>
-
-              <div>
-                <label class="filter-label">Examination Mode:</label>
-                <div class="radio-stack">
-                  <label class="radio-label">
+          <div class="builder-grid">
+            <!-- Left Column: Test Mode & Question Pool -->
+            <div class="builder-column">
+              <div class="form-group">
+                <label class="form-label">Test Mode</label>
+                <div class="mode-cards">
+                  <label class="mode-card selected">
                     <input type="radio" name="test-mode" value="tutor" checked>
-                    <span><strong>Tutor Mode:</strong> Immediate answer reveal and detailed pearls</span>
+                    <div class="mode-card-content">
+                      <div class="mode-title">👨‍🏫 Tutor Mode (Recommended)</div>
+                      <div class="mode-desc">Immediate feedback after each answer with full pathophysiologic rationales and First Aid high-yield pearls.</div>
+                    </div>
                   </label>
-                  <label class="radio-label">
+
+                  <label class="mode-card">
                     <input type="radio" name="test-mode" value="timed">
-                    <span><strong>Timed Exam:</strong> 75 seconds per question board simulation</span>
+                    <div class="mode-card-content">
+                      <div class="mode-title">⏱️ Timed USMLE Exam Block</div>
+                      <div class="mode-desc">Simulates standard NBME/USMLE pacing (75 seconds per question). Explanations hidden until block submission.</div>
+                    </div>
                   </label>
-                  <label class="radio-label">
+
+                  <label class="mode-card">
                     <input type="radio" name="test-mode" value="untimed">
-                    <span><strong>Untimed Exam:</strong> Explanations revealed after finishing exam</span>
+                    <div class="mode-card-content">
+                      <div class="mode-title">📋 Untimed Exam Block</div>
+                      <div class="mode-desc">Answer questions at your own pace without explanations until the end of the test.</div>
+                    </div>
                   </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Question Source / Format</label>
+                <div class="chip-group" id="question-source-group">
+                  <label class="chip selected"><input type="radio" name="source-filter" value="all" checked> All Sources (1,260 Qs)</label>
+                  <label class="chip"><input type="radio" name="source-filter" value="board"> Board Vignettes (1,140 Qs)</label>
+                  <label class="chip"><input type="radio" name="source-filter" value="anki"> Exam 2 Board Vignettes (120 Qs)</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Yield Filter</label>
+                <div class="chip-group" id="yield-filter-group">
+                  <label class="chip selected"><input type="radio" name="yield-filter" value="all" checked> All Yields</label>
+                  <label class="chip"><input type="radio" name="yield-filter" value="High"> High Yield Only</label>
+                  <label class="chip"><input type="radio" name="yield-filter" value="Mid"> Mid Yield Only</label>
+                  <label class="chip"><input type="radio" name="yield-filter" value="Low"> Low Yield Only</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Question Pool Filter</label>
+                <div class="chip-group">
+                  <label class="chip selected"><input type="radio" name="pool-filter" value="all" checked> All Questions</label>
+                  <label class="chip"><input type="radio" name="pool-filter" value="unused"> Unused Only</label>
+                  <label class="chip"><input type="radio" name="pool-filter" value="incorrect"> Incorrect Only (Redo)</label>
+                  <label class="chip"><input type="radio" name="pool-filter" value="flagged"> Flagged / Bookmarked</label>
+                  <label class="chip"><input type="radio" name="pool-filter" value="weak"> Weak Objectives (&lt;70%)</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Number of Questions</label>
+                <div class="count-selector">
+                  <button type="button" class="btn-count" data-count="5">5</button>
+                  <button type="button" class="btn-count active" data-count="10">10</button>
+                  <button type="button" class="btn-count" data-count="20">20</button>
+                  <button type="button" class="btn-count" data-count="30">30</button>
+                  <button type="button" class="btn-count" data-count="40">40 (Full Block)</button>
+                  <input type="number" id="custom-count" class="form-input custom-count-input" min="1" max="100" placeholder="Custom">
                 </div>
               </div>
             </div>
 
-            <!-- Number of Questions & Start Button -->
-            <div class="quiz-start-bar mt-4">
-              <div class="count-selector">
-                <label for="quiz-q-count" class="filter-label">Number of Questions:</label>
-                <div class="count-input-wrap">
-                  <input type="number" id="quiz-q-count" class="form-input" min="1" max="100" value="20">
-                  <div class="btn-group count-presets">
-                    <button type="button" class="btn btn-xs btn-preset" data-count="10">10</button>
-                    <button type="button" class="btn btn-xs btn-preset" data-count="20">20</button>
-                    <button type="button" class="btn btn-xs btn-preset" data-count="40">40</button>
-                    <button type="button" class="btn btn-xs btn-preset" data-count="max">Max</button>
+            <!-- Right Column: Week & Lecture Selector -->
+            <div class="builder-column">
+              <div class="form-group">
+                <div class="flex-between mb-2">
+                  <label class="form-label mb-0">Select Lectures & Topics</label>
+                  <div class="quick-select-links">
+                    <button type="button" class="btn-link" id="select-all-lectures">Select All</button>
+                    <span>•</span>
+                    <button type="button" class="btn-link" id="deselect-all-lectures">Clear</button>
                   </div>
                 </div>
-              </div>
 
-              <div class="start-action">
-                <button class="btn btn-primary btn-lg" id="btn-start-configured-quiz">
-                  🚀 Launch Practice Exam (<span id="builder-matching-count">0</span> Available)
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. ACTIVE QUIZ VIEW (UWORLD / USMLE AUTHENTIC ENVIRONMENT) -->
-      <section id="view-active-quiz" class="view-panel">
-        <!-- Floating Highlight Color Bubble -->
-        <div id="floating-highlight-bubble" class="highlight-bubble" style="display: none;">
-          <button class="bubble-color yellow" title="Highlight Yellow" data-color="yellow"></button>
-          <button class="bubble-color green" title="Highlight Green" data-color="green"></button>
-          <button class="bubble-color pink" title="Highlight Pink" data-color="pink"></button>
-        </div>
-
-        <div class="quiz-container">
-          <!-- Quiz Top Toolbar: USMLE Fred / UWorld Style -->
-          <div class="quiz-header card">
-            <div class="quiz-header-left">
-              <span class="quiz-title-badge" id="quiz-badge-mode">Tutor Mode</span>
-              <span class="quiz-progress-text" id="quiz-q-counter">Item 1 of 20</span>
-              <span class="quiz-block-id" id="quiz-q-id">ID: --</span>
-            </div>
-
-            <div class="quiz-header-center">
-              <div class="quiz-timer" id="quiz-timer-box">
-                <span class="timer-icon">⏱️</span>
-                <span class="timer-digits" id="quiz-timer-display">00:00</span>
-                <button class="btn-icon btn-timer-toggle" id="btn-timer-pause" title="Pause Exam">⏸️</button>
-              </div>
-            </div>
-
-            <div class="quiz-header-right">
-              <!-- USMLE Standard Clinical Tools -->
-              <button class="btn btn-tool" id="btn-lab-values" title="USMLE Standard Reference Ranges / Lab Values">
-                🧪 Lab Values
-              </button>
-              <button class="btn btn-tool" id="btn-calc-toggle" title="Standard Clinical Calculator">
-                🧮 Calculator
-              </button>
-              <button class="btn btn-tool" id="btn-notes-toggle" title="Question Scratchpad / Notes">
-                📝 Notes
-              </button>
-              <button class="btn btn-tool" id="btn-flag-toggle" title="Mark / Flag Question for Review (F)">
-                🚩 Mark
-              </button>
-              <button class="btn btn-tool" id="btn-strike-toggle" title="Distractor Strikethrough Mode (S)">
-                ✂️ Strikethrough
-              </button>
-              <button class="btn btn-tool" id="btn-highlight-toggle" title="Auto-Highlighter Mode (H)">
-                🖍️ Highlight
-              </button>
-              <button class="btn btn-tool text-muted" id="btn-clear-highlights" style="display: none;" title="Remove all highlights on this question">
-                🧹 Clear
-              </button>
-            </div>
-          </div>
-
-          <!-- Main Question Display Card -->
-          <div class="quiz-viewport card">
-            <div class="quiz-content-split">
-              <!-- Stem & Media -->
-              <div class="quiz-stem-container">
-                <div class="q-metadata-bar">
-                  <span class="badge badge-primary" id="q-meta-lecture">Lecture</span>
-                  <span class="badge badge-subtle" id="q-meta-yield">High Yield</span>
+                <!-- Week Filter Tabs -->
+                <div class="week-filter-pills">
+                  <button type="button" class="week-pill active" data-week="all">All Modules</button>
+                  <button type="button" class="week-pill" data-week="W1">Week 1 (330)</button>
+                  <button type="button" class="week-pill" data-week="W2">Week 2 (180)</button>
+                  <button type="button" class="week-pill" data-week="W3">Week 3 (360)</button>
+                  <button type="button" class="week-pill" data-week="Notebook W4-5">Notebooks W4-5 (278)</button>
+                  <button type="button" class="week-pill" data-week="Notebook W6">Notebooks W6 (219)</button>
+                  <button type="button" class="week-pill" data-week="Pharmacology">Pharmacology (59)</button>
                 </div>
-                <div class="q-stem-text" id="q-stem-text">
+
+                <!-- Lecture Checklist -->
+                <div class="lecture-checklist" id="lecture-checklist-container">
                   <!-- Injected via JavaScript -->
                 </div>
-                <div class="q-media-container" id="q-media-box" style="display: none;">
-                  <img id="q-media-img" src="" alt="Clinical Neuro Image" class="diagnostic-image">
-                </div>
-              </div>
-
-              <!-- Answer Choices List -->
-              <div class="quiz-choices-container">
-                <div class="choices-instruction">Select the single best answer:</div>
-                <div class="choices-list" id="q-choices-list">
-                  <!-- Choices A-E rendered via JavaScript -->
-                </div>
-
-                <div class="quiz-choice-actions mt-3">
-                  <button class="btn btn-primary" id="btn-submit-answer" style="display: none;">Submit Answer</button>
-                  <button class="btn btn-success" id="btn-next-question-direct" style="display: none;">Next Question &rarr;</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- UWorld-Style Explanation & Educational Objective Panel -->
-            <div class="quiz-explanation-box card" id="quiz-explanation" style="display: none;">
-              <div class="exp-header">
-                <span class="exp-badge" id="exp-result-badge">Correct</span>
-                <span class="exp-correct-key" id="exp-correct-key">Correct Answer: (A)</span>
-              </div>
-              <div class="exp-body" id="exp-rationale-text">
-                <!-- Rationale markdown rendered here -->
-              </div>
-              <div class="exp-pearl-box mt-3" id="exp-pearl-box" style="display: none;">
-                <div class="pearl-title">⚡ USMLE High-Yield Pearl</div>
-                <div class="pearl-content" id="exp-pearl-text"></div>
-              </div>
-              <div class="exp-lo-box mt-3" id="exp-lo-box" style="display: none;">
-                <div class="lo-title">🎯 UWorld Educational Objective</div>
-                <ul class="lo-list" id="exp-lo-list"></ul>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Exam Navigation Bar -->
-          <div class="quiz-footer card">
-            <button class="btn btn-secondary" id="btn-nav-prev">&larr; Previous</button>
-            <div class="quiz-nav-grid-toggle">
-              <button class="btn btn-outline" id="btn-toggle-grid" style="color: #FFFFFF; border-color: rgba(255,255,255,0.3);">
-                Review Item Grid (<span id="grid-answered-count">0</span>/<span id="grid-total-count">0</span> Answered)
+          <div class="builder-footer">
+            <div class="available-count-info">
+              Matching questions available: <strong id="matching-q-count">870</strong>
+            </div>
+            <button class="btn btn-primary btn-lg" id="btn-start-configured-quiz">
+              🚀 Start Quiz Now
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. ACTIVE QUIZ INTERFACE -->
+      <section id="view-active-quiz" class="view-panel">
+        <div class="quiz-viewport">
+          <!-- Floating Highlight Action Bubble -->
+          <div id="floating-highlight-bubble" class="floating-highlight-bubble" style="display: none;">
+            <button type="button" class="bubble-btn bubble-btn-yellow" data-color="yellow" title="Highlight Yellow (H)">🖍️ Highlight</button>
+            <button type="button" class="bubble-btn bubble-btn-green" data-color="green" title="Highlight Green">🍏 Green</button>
+            <button type="button" class="bubble-btn bubble-btn-pink" data-color="pink" title="Highlight Pink">🌸 Pink</button>
+          </div>
+          <!-- Quiz Toolbar -->
+          <div class="quiz-toolbar">
+            <div class="toolbar-left">
+              <span class="quiz-mode-badge" id="active-mode-badge">Tutor Mode</span>
+              <span class="q-counter" id="active-q-counter">Question 1 of 10</span>
+              <button class="btn-tool" id="btn-flag-toggle" title="Flag / Bookmark question for review">
+                <span class="flag-icon">🚩</span> Flag Question
+              </button>
+              <button class="btn-tool" id="btn-strike-toggle" title="Toggle distractor strikethrough mode (Shortcut: S)">
+                <span class="strike-icon">✂️</span> Strikethrough
+              </button>
+              <button class="btn-tool" id="btn-highlight-toggle" title="Toggle Auto-Highlight Mode (Shortcut: H)">
+                <span class="highlight-icon">🖍️</span> Highlight
+              </button>
+              <button class="btn-tool" id="btn-clear-highlights" title="Clear highlights on this question" style="display: none;">
+                <span>🧹</span> Clear
               </button>
             </div>
-            <button class="btn btn-primary" id="btn-nav-next">Next &rarr;</button>
-            <button class="btn btn-danger" id="btn-nav-finish">End Block & Score</button>
+
+            <div class="toolbar-center">
+              <div class="timer-box" id="quiz-timer-box">
+                <span class="timer-icon">⏱️</span>
+                <span class="timer-digits" id="quiz-timer-display">00:00</span>
+                <button class="timer-pause-btn" id="btn-timer-pause" title="Pause Timer">⏸️</button>
+              </div>
+            </div>
+
+            <div class="toolbar-right">
+              <button class="btn btn-outline btn-sm" id="btn-open-nav-drawer">Jump to Question ▾</button>
+              <button class="btn btn-danger btn-sm" id="btn-end-block">End Block</button>
+            </div>
           </div>
 
-          <!-- Question Grid Modal / Drawer -->
-          <div class="quiz-grid-modal" id="quiz-grid-modal" style="display: none;">
-            <div class="grid-modal-header">
-              <h4>Review Items in Current Block</h4>
-              <button class="btn-icon" id="btn-close-grid">&times;</button>
+          <!-- Question Jump Navigation Drawer (Dropdown Grid) -->
+          <div class="q-nav-drawer" id="q-nav-drawer" style="display: none;">
+            <div class="drawer-header">
+              <span>Question Overview</span>
+              <button class="btn-close-drawer" id="btn-close-drawer">✕</button>
             </div>
-            <div class="grid-buttons-wrap" id="quiz-grid-buttons">
-              <!-- Grid square buttons rendered via JS -->
+            <div class="drawer-grid" id="q-nav-grid">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- Question Area -->
+          <div class="question-container">
+            <div class="question-meta-bar">
+              <span class="badge badge-week" id="q-meta-week">Week 1</span>
+              <span class="badge badge-lecture" id="q-meta-lecture">Lecture 1.1 Anatomy</span>
+              <span class="badge badge-topic" id="q-meta-topic">Levator Ani & Perineal Body</span>
+              <span class="badge badge-yield" id="q-meta-yield" style="background-color: var(--bg-surface); border: 1px solid var(--accent-rose); color: var(--accent-rose);">🔥 High Yield</span>
+            </div>
+
+            <!-- Clinical Vignette Stem -->
+            <div class="question-stem" id="q-stem-text">
+              Loading question...
+            </div>
+
+            <!-- Answer Choices -->
+            <div class="choices-list" id="q-choices-container">
+              <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Tutor Mode Action Bar -->
+            <div class="quiz-actions-bar">
+              <button class="btn btn-secondary" id="btn-prev-q">← Previous</button>
+              <div class="center-actions">
+                <button class="btn btn-primary" id="btn-submit-answer">Submit Answer</button>
+              </div>
+              <button class="btn btn-secondary" id="btn-next-q">Next →</button>
+            </div>
+
+            <!-- Detailed Explanation & Pearl Card (revealed upon answer or during review) -->
+            <div class="explanation-card" id="q-explanation-card" style="display: none;">
+              <div class="explanation-header" id="exp-status-banner">
+                <span class="exp-icon" id="exp-status-icon">✓</span>
+                <span class="exp-title" id="exp-status-title">Correct! Answer is (C)</span>
+              </div>
+
+              <div class="explanation-body">
+                <h4>Comprehensive Clinical Rationale</h4>
+                <div class="rationale-text" id="exp-rationale-text">
+                  <!-- Injected via JavaScript -->
+                </div>
+
+                <div class="pearl-box" id="exp-pearl-box">
+                  <div class="pearl-header">
+                    <span class="pearl-icon">💡</span>
+                    <strong>First Aid 2025 High-Yield USMLE Pearl</strong>
+                  </div>
+                  <div class="pearl-content" id="exp-pearl-text">
+                    <!-- Injected via JavaScript -->
+                  </div>
+                </div>
+
+                <div class="lo-box" id="exp-lo-box" style="display: none;">
+                  <div class="lo-header">
+                    <span class="lo-icon">🎯</span>
+                    <strong>Learning Objectives Covered</strong>
+                  </div>
+                  <ul class="lo-list" id="exp-lo-list">
+                    <!-- Injected via JavaScript -->
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 4. SCORE REPORT VIEW -->
+      <!-- 4. BLOCK SCORE REPORT & REVIEW SUMMARY -->
       <section id="view-score-report" class="view-panel">
-        <div class="score-report-card card">
-          <div class="score-header">
-            <h2>Exam Completed!</h2>
-            <p class="text-secondary" id="score-exam-title">IMC535 Practice Exam</p>
+        <div class="score-report-card">
+          <div class="report-header">
+            <h2>Block Performance Report</h2>
+            <p id="report-subtitle">Session completed in 12m 45s</p>
           </div>
 
-          <div class="score-metrics-grid mt-4">
-            <div class="score-metric">
-              <div class="metric-val" id="score-pct">0%</div>
-              <div class="metric-lbl">Overall Score</div>
+          <div class="report-score-banner">
+            <div class="score-circle">
+              <span class="score-percentage" id="rep-percentage">80%</span>
+              <span class="score-fraction" id="rep-fraction">8 / 10 Correct</span>
             </div>
-            <div class="score-metric">
-              <div class="metric-val" id="score-raw">0 / 0</div>
-              <div class="metric-lbl">Correct Answers</div>
-            </div>
-            <div class="score-metric">
-              <div class="metric-val" id="score-time">00:00</div>
-              <div class="metric-lbl">Total Time</div>
-            </div>
-            <div class="score-metric">
-              <div class="metric-val" id="score-pace">0s</div>
-              <div class="metric-lbl">Avg Pace / Question</div>
+            <div class="score-summary-details">
+              <div class="rep-stat-item">
+                <span class="rep-stat-lbl">Time Elapsed</span>
+                <span class="rep-stat-val" id="rep-time">00:00</span>
+              </div>
+              <div class="rep-stat-item">
+                <span class="rep-stat-lbl">Average Pace</span>
+                <span class="rep-stat-val" id="rep-pace">0s / Q</span>
+              </div>
+              <div class="rep-stat-item">
+                <span class="rep-stat-lbl">Bookmarked</span>
+                <span class="rep-stat-val" id="rep-flagged">0</span>
+              </div>
             </div>
           </div>
 
-          <div class="score-actions mt-4">
-            <button class="btn btn-primary btn-lg" id="btn-review-all">Review All Questions</button>
-            <button class="btn btn-secondary btn-lg" id="btn-review-incorrect">Review Incorrect Only</button>
-            <button class="btn btn-outline btn-lg" id="btn-retake-exam">Retake Exam</button>
+          <!-- Question Grid Review -->
+          <div class="report-grid-section">
+            <h3>Question Summary & Explanations</h3>
+            <p class="section-hint">Click any question number below to review its vignette, rationale, and First Aid pearl.</p>
+            <div class="report-q-grid" id="report-q-grid">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+
+          <div class="report-actions">
+            <button class="btn btn-secondary" id="btn-review-all-qs">🔍 Review All Questions</button>
+            <button class="btn btn-primary" id="btn-report-new-quiz">⚡ Create New Test</button>
+            <button class="btn btn-outline" id="btn-report-to-dashboard">📊 Back to Analytics</button>
           </div>
         </div>
       </section>
 
-      <!-- 5. BROWSE QBANK VIEW -->
+      <!-- 5. BROWSE ALL QUESTIONS & OBJECTIVES -->
       <section id="view-browse" class="view-panel">
-        <div class="card">
-          <div class="card-header-flex">
-            <div>
-              <h3>Browse Question Repository</h3>
-              <p class="text-secondary" style="font-size: 0.85rem;">Search and review all clinical vignettes, answer rationales, and high-yield pearls.</p>
-            </div>
-            <div class="filters-inline">
-              <select id="browse-exam-filter" class="form-select">
-                <option value="all">All Exams</option>
-                <option value="E1">Exam 1 (E1)</option>
-                <option value="E2">Exam 2 (E2)</option>
-                <option value="E3">Exam 3 (E3)</option>
-                <option value="E4">Exam 4 (E4)</option>
-              </select>
-              <select id="browse-week-filter" class="form-select">
-                <option value="all">All Weeks</option>
-                <option value="E1-W1">Week 1 (Foundations)</option>
-                <option value="E1-W2">Week 2</option>
-                <option value="E1-W3">Week 3</option>
-              </select>
-              <input type="text" id="browse-search" class="form-input" placeholder="Search vignette text, keywords..." style="width: 250px;">
-            </div>
+        <div class="browse-header-card">
+          <h2>Browse Complete QBank Repository</h2>
+          <p>Search, filter, and inspect all 1,260 board-style questions across the IMC534 reproductive curriculum.</p>
+          
+          <div class="browse-filters-bar">
+            <input type="text" id="browse-search" placeholder="Search keywords (e.g., endometriosis, Leydig, teratoma, Sheehan)..." class="form-input search-input">
+            <select id="browse-source-filter" class="form-select">
+              <option value="all">All Sources (1,260 Qs)</option>
+              <option value="board">Board Vignettes (1,140 Qs)</option>
+              <option value="anki">Exam 2 Board Vignettes (120 Qs)</option>
+            </select>
+            <select id="browse-history-filter" class="form-select">
+              <option value="all">All Performance</option>
+              <option value="incorrect">Incorrect Only</option>
+              <option value="correct">Correct Only</option>
+              <option value="untested">Untested Only</option>
+            </select>
+            <select id="browse-yield-filter" class="form-select">
+              <option value="all">All Yields</option>
+              <option value="High">High Yield Only</option>
+              <option value="Mid">Mid Yield Only</option>
+              <option value="Low">Low Yield Only</option>
+            </select>
+            <select id="browse-week-filter" class="form-select">
+              <option value="all">All Modules (1,260 Qs)</option>
+              <option value="W1">Week 1 (330 Qs)</option>
+              <option value="W2">Week 2 (180 Qs)</option>
+              <option value="W3">Week 3 (360 Qs)</option>
+              <option value="Notebook W4-5">Notebooks W4-5 (278 Qs)</option>
+              <option value="Notebook W6">Notebooks W6 (219 Qs)</option>
+              <option value="Pharmacology">Pharmacology (59 Qs)</option>
+            </select>
+            <select id="browse-lecture-filter" class="form-select">
+              <option value="all">All Lectures</option>
+            </select>
           </div>
+        </div>
 
-          <div class="browse-results-list mt-3" id="browse-results-list">
-            <!-- Dynamic question cards injected via JS -->
-          </div>
+        <div class="browse-results-count" id="browse-count-label">
+          Showing 1,260 questions
+        </div>
+
+        <div class="browse-cards-container" id="browse-cards-container">
+          <!-- Injected via JS -->
         </div>
       </section>
     </main>
-
-    <!-- ======================================================================
-         USMLE REFERENCE RANGES (LAB VALUES) MODAL
-         ====================================================================== -->
-    <div id="modal-lab-values" class="usmle-modal" style="display: none;">
-      <div class="modal-dialog labs-dialog">
-        <div class="modal-header">
-          <h4>🧪 USMLE Standard Reference Ranges</h4>
-          <button class="modal-close-btn" id="btn-close-labs">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="lab-search-bar">
-            <input type="text" id="lab-search-input" class="form-input" placeholder="Search lab tests (e.g., CSF, Sodium, Glucose, pH)..." style="width: 100%;">
-          </div>
-
-          <div id="labs-content-area">
-            <!-- CSF (Crucial for Neuro) -->
-            <div class="lab-category-section">
-              <h5 class="lab-category-title">Cerebrospinal Fluid (CSF) — Neuroscience</h5>
-              <table class="lab-table">
-                <tbody>
-                  <tr><td class="lab-name">Opening Pressure</td><td class="lab-range">100–180 mm H₂O (70–180 mm H₂O)</td></tr>
-                  <tr><td class="lab-name">Total Protein</td><td class="lab-range">15–45 mg/dL (0.15–0.45 g/L)</td></tr>
-                  <tr><td class="lab-name">Glucose</td><td class="lab-range">40–70 mg/dL (2.2–3.9 mmol/L) [~60% of serum]</td></tr>
-                  <tr><td class="lab-name">Cell Count (WBCs)</td><td class="lab-range">0–5 mononuclear cells/µL</td></tr>
-                  <tr><td class="lab-name">Oligoclonal Bands</td><td class="lab-range">Negative / Absent</td></tr>
-                  <tr><td class="lab-name">Chloride</td><td class="lab-range">118–132 mEq/L</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Serum Chemistry & Electrolytes -->
-            <div class="lab-category-section">
-              <h5 class="lab-category-title">Serum Chemistry & Electrolytes</h5>
-              <table class="lab-table">
-                <tbody>
-                  <tr><td class="lab-name">Sodium (Na⁺)</td><td class="lab-range">136–145 mEq/L (136–145 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Potassium (K⁺)</td><td class="lab-range">3.5–5.0 mEq/L (3.5–5.0 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Chloride (Cl⁻)</td><td class="lab-range">95–105 mEq/L (95–105 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Bicarbonate (HCO₃⁻)</td><td class="lab-range">22–28 mEq/L (22–28 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Blood Urea Nitrogen (BUN)</td><td class="lab-range">7–20 mg/dL (2.5–7.1 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Serum Creatinine</td><td class="lab-range">0.6–1.2 mg/dL (53–106 µmol/L)</td></tr>
-                  <tr><td class="lab-name">Glucose (Fasting)</td><td class="lab-range">70–99 mg/dL (3.9–5.5 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Calcium (Total)</td><td class="lab-range">8.5–10.5 mg/dL (2.1–2.6 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Magnesium</td><td class="lab-range">1.5–2.5 mg/dL (0.75–1.25 mmol/L)</td></tr>
-                  <tr><td class="lab-name">Phosphorus</td><td class="lab-range">3.0–4.5 mg/dL (1.0–1.5 mmol/L)</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Arterial Blood Gas (ABG) -->
-            <div class="lab-category-section">
-              <h5 class="lab-category-title">Arterial Blood Gas (Room Air)</h5>
-              <table class="lab-table">
-                <tbody>
-                  <tr><td class="lab-name">pH</td><td class="lab-range">7.35–7.45</td></tr>
-                  <tr><td class="lab-name">PCO₂</td><td class="lab-range">35–45 mmHg</td></tr>
-                  <tr><td class="lab-name">PO₂</td><td class="lab-range">75–100 mmHg</td></tr>
-                  <tr><td class="lab-name">HCO₃⁻</td><td class="lab-range">22–26 mEq/L</td></tr>
-                  <tr><td class="lab-name">O₂ Saturation</td><td class="lab-range">95–100%</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Complete Blood Count (CBC) -->
-            <div class="lab-category-section">
-              <h5 class="lab-category-title">Complete Blood Count (CBC)</h5>
-              <table class="lab-table">
-                <tbody>
-                  <tr><td class="lab-name">Leukocytes (WBC)</td><td class="lab-range">4,500–11,000/µL (4.5–11.0 × 10⁹/L)</td></tr>
-                  <tr><td class="lab-name">Hemoglobin (Male)</td><td class="lab-range">13.5–17.5 g/dL (135–175 g/L)</td></tr>
-                  <tr><td class="lab-name">Hemoglobin (Female)</td><td class="lab-range">12.0–15.5 g/dL (120–155 g/L)</td></tr>
-                  <tr><td class="lab-name">Hematocrit (Male)</td><td class="lab-range">41–50% (0.41–0.50)</td></tr>
-                  <tr><td class="lab-name">Hematocrit (Female)</td><td class="lab-range">36–48% (0.36–0.48)</td></tr>
-                  <tr><td class="lab-name">Platelet Count</td><td class="lab-range">150,000–450,000/µL</td></tr>
-                  <tr><td class="lab-name">Segmented Neutrophils</td><td class="lab-range">54–62%</td></tr>
-                  <tr><td class="lab-name">Lymphocytes</td><td class="lab-range">25–33%</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ======================================================================
-         USMLE STANDARD CALCULATOR MODAL
-         ====================================================================== -->
-    <div id="modal-calculator" class="usmle-modal" style="display: none;">
-      <div class="modal-dialog calc-dialog">
-        <div class="modal-header">
-          <h4>🧮 Calculator</h4>
-          <button class="modal-close-btn" id="btn-close-calc">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="calc-display" id="calc-display">0</div>
-          <div class="calc-keys-grid">
-            <button class="calc-btn op-btn" data-calc="C">C</button>
-            <button class="calc-btn op-btn" data-calc="DEL">&larr;</button>
-            <button class="calc-btn op-btn" data-calc="%">%</button>
-            <button class="calc-btn op-btn" data-calc="/">÷</button>
-
-            <button class="calc-btn" data-calc="7">7</button>
-            <button class="calc-btn" data-calc="8">8</button>
-            <button class="calc-btn" data-calc="9">9</button>
-            <button class="calc-btn op-btn" data-calc="*">&times;</button>
-
-            <button class="calc-btn" data-calc="4">4</button>
-            <button class="calc-btn" data-calc="5">5</button>
-            <button class="calc-btn" data-calc="6">6</button>
-            <button class="calc-btn op-btn" data-calc="-">&minus;</button>
-
-            <button class="calc-btn" data-calc="1">1</button>
-            <button class="calc-btn" data-calc="2">2</button>
-            <button class="calc-btn" data-calc="3">3</button>
-            <button class="calc-btn op-btn" data-calc="+">+</button>
-
-            <button class="calc-btn" data-calc="0" style="grid-column: span 2;">0</button>
-            <button class="calc-btn" data-calc=".">.</button>
-            <button class="calc-btn eq-btn" data-calc="=">=</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ======================================================================
-         QUESTION NOTES SCRATCHPAD MODAL
-         ====================================================================== -->
-    <div id="modal-notes" class="usmle-modal" style="display: none;">
-      <div class="modal-dialog notes-dialog">
-        <div class="modal-header">
-          <h4 id="notes-title">📝 Question Notes</h4>
-          <button class="modal-close-btn" id="btn-close-notes">&times;</button>
-        </div>
-        <div class="modal-body">
-          <textarea id="notes-textarea" class="notes-textarea" placeholder="Type your clinical reasoning, lab calculations, or differential diagnosis here... (Auto-saved)"></textarea>
-          <div class="mt-2 text-muted" style="font-size: 0.75rem;">Notes are saved automatically to your browser for this specific question.</div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Include data scripts and core application engine -->
-  <script src="questions_data.js"></script>
-  <script src="app.js"></script>
+  <!-- Load Data and Core Application Scripts -->
+  <script src="questions_data.js?v=3.0"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>
